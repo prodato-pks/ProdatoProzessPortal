@@ -25,10 +25,10 @@
 </repository></repositories>
   <dependencies>
   	<dependency>
-  		<groupId>com.axonivy.utils.docfactory</groupId>
-  		<artifactId>doc-factory</artifactId>
-  		<version>10.0.1-SNAPSHOT</version>
-  		<type>iar</type>
-  	</dependency>
+  <groupId>com.axonivy.utils.docfactory</groupId>
+  <artifactId>doc-factory</artifactId>
+  <version>10.0.1-SNAPSHOT</version>
+  <type>iar</type>
+</dependency>
   </dependencies>
 </project>
