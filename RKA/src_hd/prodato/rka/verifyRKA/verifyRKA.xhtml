@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:ic="http://ivyteam.ch/jsf/component" xmlns:p="http://primefaces.org/ui"
+  xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+  <ui:composition template="/layouts/frame-10.xhtml">
+    <ui:define name="title">verifyRKA</ui:define>
+    <ui:define name="content">
+
+      <h3>&#160;Reisekostenabrechnung überprüfen&#160;</h3>
+
+      <h:form id="form">
+        <p:messages />
+				<p:fieldset legend="Mitarbeiter">
+					<p:panelGrid columns="2" >
+						<p:outputLabel for="rKADataName" value="Name" />
+						<p:outputLabel id="rKADataName" value="#{data.RKAData.name}"></p:outputLabel>
+					</p:panelGrid>
+				</p:fieldset>
+				<p:fieldset legend="Dienstreise">
+					<p:panelGrid columns="2">
+						<p:outputLabel for="rKADataDateTravelStart" value="Reisebeginn" />
+						<p:outputLabel id="rKADataDateTravelStart"
+							value="#{data.RKAData.dateTravelStart}" >
+							<f:convertDateTime pattern="dd.MM.yyyy" />
+						</p:outputLabel>
+						<p:outputLabel for="rKADataDateTravelEnd" value="Reiseende" />
+						<p:outputLabel id="rKADataDateTravelEnd"
+							value="#{data.RKAData.dateTravelEnd}" >
+							<f:convertDateTime pattern="dd.MM.yyyy" />
+						</p:outputLabel>
+						<p:outputLabel value="Reisedauer" />
+						<p:outputLabel value="#{data.RKAData.daysTotal} Tag(e)" />
+					</p:panelGrid>
+					<p:spacer width="24" height="16" />
+					<p:panelGrid columns="2" >
+
+						<p:outputLabel for="rKADataTravelReason" value="Grund der Reise" />
+						<p:outputLabel id="rKADataTravelReason" value="#{data.RKAData.travelReason}"/>
+					</p:panelGrid>
+				</p:fieldset>
+				<p:fieldset legend="Ausgaben" >
+					<p:panelGrid columns="4" >
+						<p:outputLabel value="Fahrt mit Privatfahrzeug" />
+						<p:outputLabel value="#{data.RKAData.kilometresPrivateCar} km" />
+						<p:outputLabel value="Satz: 0,30€" />
+						<p:outputLabel value="#{data.RKAData.expenses.expensesCar}€" />
+						<p:outputLabel value="Auslagen Bahn" />
+						<p:spacer width="24" height="16" />
+						<p:spacer width="24" height="16" />
+						<p:outputLabel value="#{data.RKAData.expenses.expensesTrain}€" />
+						<p:outputLabel value="Auslagen Taxi" />
+						<p:spacer width="24" height="16" />
+						<p:spacer width="24" height="16" />
+						<p:outputLabel value="#{data.RKAData.expenses.expensesTaxi}€" />
+						<p:outputLabel value="Auslagen Flug" />
+						<p:spacer width="24" height="16" />
+						<p:spacer width="24" height="16" />
+						<p:outputLabel value="#{data.RKAData.expenses.expensesPlane}€" />
+						<p:outputLabel value="Auslagen Hotel" />
+						<p:spacer width="24" height="16" />
+						<p:spacer width="24" height="16" />
+						<p:outputLabel value="#{data.RKAData.expenses.expensesHotel}€" />
+						<p:outputLabel value="Auslagen NV" />
+						<p:spacer width="24" height="16" />
+						<p:spacer width="24" height="16" />
+						<p:outputLabel value="#{data.RKAData.expenses.expensesNV}€" />
+
+						<p:outputLabel value="Sonstige Auslagen" />
+						<p:spacer width="24" height="16" />
+						<p:spacer width="24" height="16" />
+						<p:outputLabel value="#{data.RKAData.expenses.expensesOther}€" />
+					</p:panelGrid>
+				</p:fieldset>
+				<p:fieldset legend="Verpflegung">
+						<p:panelGrid columns="4">
+						<p:outputLabel value="Grunderstattung Verpflegungsaufwand" />
+						<p:outputLabel
+							value="14€ für An- und Abreisetag, 28€ je Zwischentag" />
+						<p:spacer width="24" height="16" />
+						<p:outputLabel value="#{data.RKAData.refundFoodBeforeCuts}€" />
+						<p:outputLabel value="Kürzung Frühstück" />
+						<p:outputLabel
+							value="#{data.RKAData.frequencyUnpaidFood.frequencyUnpaidBreakfast}" />
+						<p:outputLabel value="(je -5,60€) " />
+						<p:outputLabel value="#{data.RKAData.cutsFood.cutsBreakfast}€" />
+						<p:outputLabel value="Kürzung Mittagessen" />
+						<p:outputLabel
+							value="#{data.RKAData.frequencyUnpaidFood.frequencyUnpaidLunch}" />
+						<p:outputLabel value="(je -11,20€) " />
+						<p:outputLabel value="#{data.RKAData.cutsFood.cutsLunch}€" />
+						<p:outputLabel value="Kürzung Abendessen" />
+						<p:outputLabel
+							value="#{data.RKAData.frequencyUnpaidFood.frequencyUnpaidDinner}" />
+						<p:outputLabel value="(je -11,20€) " />
+						<p:outputLabel value="#{data.RKAData.cutsFood.cutsDinner}€" />
+						<p:outputLabel value="Gesamterstattung Verpflegung" />
+						<p:outputLabel value="#{data.RKAData.expenses.expensesFood}€" />
+					</p:panelGrid>
+					</p:fieldset>
+				<p:fieldset legend="Kostenübernahme durch Prodato">
+					<p:panelGrid columns="2">
+						<p:outputLabel for="rkaDataExpensesTotal"
+							value="Auszahlungsbetrag" />
+						<p:outputLabel id="rkaDataExpensesTotal"
+							value="#{data.RKAData.expensesTotal}€"></p:outputLabel>
+					</p:panelGrid>
+				</p:fieldset>
+
+				<p:fieldset legend="Anmerkungen" >
+					<p:outputLabel value="#{data.RKAData.comment}" />
+				</p:fieldset>
+				<br />
+        <div class="command-btns">
+					<p:commandLink id="cancel"
+						actionListener="#{ivyWorkflowView.cancel()}" value="Abbrechen" />
+					<p:commandButton id="reject" actionListener="#{logic.reject}"
+						value="RKA überarbeiten" update="form" icon="fa-solid fa-pencil" />
+					<p:commandButton id="approve" actionListener="#{logic.approve}"
+						value="RKA absenden" update="form" icon="fa-solid fa-forward" />
+				</div>
+      </h:form>
+
+    </ui:define>
+  </ui:composition>
+</h:body>
+
+</html>

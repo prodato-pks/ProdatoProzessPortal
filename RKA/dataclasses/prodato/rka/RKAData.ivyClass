@@ -1,0 +1,35 @@
+RKAData #class
+prodato.rka #namespace
+name String #field
+name PERSISTENT #fieldModifier
+dateTravelStart Date #field
+dateTravelStart PERSISTENT #fieldModifier
+dateTravelEnd Date #field
+dateTravelEnd PERSISTENT #fieldModifier
+daysTotal Number #field
+daysTotal PERSISTENT #fieldModifier
+travelReason String #field
+travelReason PERSISTENT #fieldModifier
+kilometresPrivateCar Number #field
+kilometresPrivateCar PERSISTENT #fieldModifier
+expensesTotal Number #field
+expensesTotal PERSISTENT #fieldModifier
+comment String #field
+comment PERSISTENT #fieldModifier
+expenses prodato.rka.expenses #field
+expenses PERSISTENT #fieldModifier
+isTEAok Boolean #field
+isTEAok PERSISTENT #fieldModifier
+reviewTEA Number #field
+cutsFood prodato.rka.cutsFood #field
+cutsFood PERSISTENT #fieldModifier
+frequencyUnpaidFood prodato.rka.frequencyUnpaidFood #field
+frequencyUnpaidFood PERSISTENT #fieldModifier
+refundFoodBeforeCuts Number #field
+refundFoodBeforeCuts PERSISTENT #fieldModifier
+rkaFile java.io.File #field
+rkaFile PERSISTENT #fieldModifier
+mergeFields List<ch.ivyteam.ivy.addons.docfactory.TemplateMergeField> #field
+mergeFields PERSISTENT #fieldModifier
+reviewDeclineReason String #field
+reviewDeclineReason PERSISTENT #fieldModifier

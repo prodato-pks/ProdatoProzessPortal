@@ -1,0 +1,22 @@
+managerReviewRKAData #class
+prodato.rka.managerReviewRKA #namespace
+name String #field
+name PERSISTENT #fieldModifier
+dateTravelStart Date #field
+dateTravelStart PERSISTENT #fieldModifier
+dateTravelEnd Date #field
+dateTravelEnd PERSISTENT #fieldModifier
+daysTotal Number #field
+daysTotal PERSISTENT #fieldModifier
+travelReason String #field
+travelReason PERSISTENT #fieldModifier
+kilometresPrivateCar Number #field
+kilometresPrivateCar PERSISTENT #fieldModifier
+expensesTotal Number #field
+expensesTotal PERSISTENT #fieldModifier
+comment String #field
+comment PERSISTENT #fieldModifier
+expenses prodato.rka.expenses #field
+expenses PERSISTENT #fieldModifier
+reviewTEA Number #field
+reviewTEA PERSISTENT #fieldModifier

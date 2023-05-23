@@ -1,0 +1,4 @@
+reviewRKAData #class
+prodato.rka.reviewRKA #namespace
+RKAData prodato.rka.RKAData #field
+RKAData PERSISTENT #fieldModifier

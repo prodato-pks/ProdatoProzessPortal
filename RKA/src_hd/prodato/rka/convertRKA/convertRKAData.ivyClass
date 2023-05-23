@@ -1,0 +1,4 @@
+convertRKAData #class
+prodato.rka.convertRKA #namespace
+RKAData prodato.rka.RKAData #field
+RKAData PERSISTENT #fieldModifier

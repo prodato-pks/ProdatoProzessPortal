@@ -1,0 +1,14 @@
+reviewDeclinedDialogueData #class
+prodato.rka.reviewDeclinedDialogue #namespace
+name String #field
+name PERSISTENT #fieldModifier
+dateTravelStart Date #field
+dateTravelStart PERSISTENT #fieldModifier
+dateTravelEnd Date #field
+dateTravelEnd PERSISTENT #fieldModifier
+travelReason String #field
+travelReason PERSISTENT #fieldModifier
+expensesTotal Number #field
+expensesTotal PERSISTENT #fieldModifier
+reviewDeclineReason String #field
+reviewDeclineReason PERSISTENT #fieldModifier

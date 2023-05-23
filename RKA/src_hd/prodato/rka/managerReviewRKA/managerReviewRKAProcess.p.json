@@ -1,0 +1,154 @@
+{
+  "format" : "10.0.0",
+  "id" : "187BCB3E6085BF11",
+  "kind" : "HTML_DIALOG",
+  "config" : {
+    "data" : "prodato.rka.managerReviewRKA.managerReviewRKAData"
+  },
+  "elements" : [ {
+      "id" : "f0",
+      "type" : "HtmlDialogStart",
+      "name" : "start(String,Date,Date,Number,String,Number,Number,String,expenses)",
+      "config" : {
+        "callSignature" : "start",
+        "result" : {
+          "params" : [
+            { "name" : "name", "type" : "String" },
+            { "name" : "dateTravelStart", "type" : "Date" },
+            { "name" : "dateTravelEnd", "type" : "Date" },
+            { "name" : "daysTotal", "type" : "Number" },
+            { "name" : "travelReason", "type" : "String" },
+            { "name" : "kilometresPrivateCar", "type" : "Number" },
+            { "name" : "expensesTotal", "type" : "Number" },
+            { "name" : "comment", "type" : "String" },
+            { "name" : "expenses", "type" : "prodato.rka.expenses" },
+            { "name" : "reviewTEA", "type" : "Number" }
+          ],
+          "map" : {
+            "result.name" : "in.name",
+            "result.dateTravelStart" : "in.dateTravelStart",
+            "result.dateTravelEnd" : "in.dateTravelEnd",
+            "result.daysTotal" : "in.daysTotal",
+            "result.travelReason" : "in.travelReason",
+            "result.kilometresPrivateCar" : "in.kilometresPrivateCar",
+            "result.expensesTotal" : "in.expensesTotal",
+            "result.comment" : "in.comment",
+            "result.expenses" : "in.expenses",
+            "result.reviewTEA" : "in.reviewTEA"
+          }
+        },
+        "input" : {
+          "params" : [
+            { "name" : "name", "type" : "String" },
+            { "name" : "dateTravelStart", "type" : "Date" },
+            { "name" : "dateTravelEnd", "type" : "Date" },
+            { "name" : "daysTotal", "type" : "Number" },
+            { "name" : "travelReason", "type" : "String" },
+            { "name" : "kilometresPrivateCar", "type" : "Number" },
+            { "name" : "expensesTotal", "type" : "Number" },
+            { "name" : "comment", "type" : "String" },
+            { "name" : "expenses", "type" : "prodato.rka.expenses" }
+          ],
+          "map" : {
+            "out.name" : "param.name",
+            "out.dateTravelStart" : "param.dateTravelStart",
+            "out.dateTravelEnd" : "param.dateTravelEnd",
+            "out.daysTotal" : "param.daysTotal",
+            "out.travelReason" : "param.travelReason",
+            "out.kilometresPrivateCar" : "param.kilometresPrivateCar",
+            "out.expensesTotal" : "param.expensesTotal",
+            "out.comment" : "param.comment",
+            "out.expenses" : "param.expenses"
+          }
+        },
+        "guid" : "187BCB3E60E16002"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 64 }
+      },
+      "connect" : { "id" : "f2", "to" : "f1" }
+    }, {
+      "id" : "f1",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 224, "y" : 64 }
+      }
+    }, {
+      "id" : "f3",
+      "type" : "HtmlDialogEventStart",
+      "name" : "close",
+      "config" : {
+        "guid" : "187BCB3E6155A6D3"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 160 },
+        "labelOffset" : { "x" : 11, "y" : 35 }
+      },
+      "connect" : { "id" : "f5", "to" : "f4" }
+    }, {
+      "id" : "f4",
+      "type" : "HtmlDialogExit",
+      "visual" : {
+        "at" : { "x" : 224, "y" : 160 }
+      }
+    }, {
+      "id" : "f6",
+      "type" : "HtmlDialogEventStart",
+      "name" : "approve",
+      "config" : {
+        "guid" : "187BCB6EBA458D8E",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.reviewTEA" : "1"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 248 }
+      },
+      "connect" : { "id" : "f10", "to" : "f7" }
+    }, {
+      "id" : "f7",
+      "type" : "HtmlDialogExit",
+      "visual" : {
+        "at" : { "x" : 224, "y" : 248 }
+      }
+    }, {
+      "id" : "f8",
+      "type" : "HtmlDialogEventStart",
+      "name" : "edit",
+      "config" : {
+        "guid" : "187BCB6EBA4DD681",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.reviewTEA" : "2"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 320 },
+        "labelOffset" : { "x" : 15, "y" : 35 }
+      },
+      "connect" : { "id" : "f12", "to" : "f7" }
+    }, {
+      "id" : "f9",
+      "type" : "HtmlDialogEventStart",
+      "name" : "reject",
+      "config" : {
+        "guid" : "187BCB6EBA481541",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.reviewTEA" : "3"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 400 },
+        "labelOffset" : { "x" : 8, "y" : 35 }
+      },
+      "connect" : { "id" : "f11", "to" : "f7" }
+    } ]
+}

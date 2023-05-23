@@ -1,0 +1,6 @@
+test3 #class
+prodato.rka #namespace
+test1 String #field
+test1 PERSISTENT #fieldModifier
+test2 String #field
+test2 PERSISTENT #fieldModifier

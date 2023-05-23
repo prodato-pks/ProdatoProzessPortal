@@ -1,0 +1,8 @@
+reviewFailedReasonData #class
+prodato.rka.reviewFailedReason #namespace
+name String #field
+name PERSISTENT #fieldModifier
+dateTravelStart Date #field
+dateTravelStart PERSISTENT #fieldModifier
+dateTravelEnd Date #field
+dateTravelEnd PERSISTENT #fieldModifier

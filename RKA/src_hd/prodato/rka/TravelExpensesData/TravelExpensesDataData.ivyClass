@@ -1,0 +1,4 @@
+TravelExpensesDataData #class
+prodato.rka.TravelExpensesData #namespace
+RKAData prodato.rka.RKAData #field
+RKAData PERSISTENT #fieldModifier

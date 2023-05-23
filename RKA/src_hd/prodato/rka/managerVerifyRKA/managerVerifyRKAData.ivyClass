@@ -1,0 +1,4 @@
+managerVerifyRKAData #class
+prodato.rka.managerVerifyRKA #namespace
+RKAData prodato.rka.RKAData #field
+RKAData PERSISTENT #fieldModifier

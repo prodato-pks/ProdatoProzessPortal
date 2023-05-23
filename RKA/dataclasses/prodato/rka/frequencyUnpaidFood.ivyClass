@@ -1,0 +1,8 @@
+frequencyUnpaidFood #class
+prodato.rka #namespace
+frequencyUnpaidBreakfast Number #field
+frequencyUnpaidBreakfast PERSISTENT #fieldModifier
+frequencyUnpaidLunch Number #field
+frequencyUnpaidLunch PERSISTENT #fieldModifier
+frequencyUnpaidDinner Number #field
+frequencyUnpaidDinner PERSISTENT #fieldModifier

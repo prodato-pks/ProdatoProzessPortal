@@ -1,0 +1,656 @@
+{
+  "format" : "10.0.0",
+  "id" : "187B2AE7B80EB09F",
+  "config" : {
+    "data" : "prodato.rka.RKAData"
+  },
+  "elements" : [ {
+      "id" : "f0",
+      "type" : "RequestStart",
+      "name" : "start.ivp",
+      "config" : {
+        "callSignature" : "start",
+        "startCategory" : "RKA",
+        "outLink" : "start.ivp",
+        "wfuser" : "1",
+        "startName" : "Neue Reisekostenabrechnung erstellen"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 64 }
+      },
+      "connect" : { "id" : "f3", "to" : "S10" }
+    }, {
+      "id" : "S10",
+      "type" : "EmbeddedProcess",
+      "name" : "Erstelle RKA",
+      "elements" : [ {
+          "id" : "S10-g0",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 64, "y" : 256 }
+          },
+          "parentConnector" : "f3",
+          "connect" : { "id" : "S10-f2", "to" : "S10-f1" }
+        }, {
+          "id" : "S10-g1",
+          "type" : "EmbeddedEnd",
+          "visual" : {
+            "at" : { "x" : 816, "y" : 256 }
+          },
+          "parentConnector" : "f2"
+        }, {
+          "id" : "S10-f1",
+          "type" : "DialogCall",
+          "name" : "Erstelle RKA",
+          "config" : {
+            "dialogId" : "prodato.rka.TravelExpensesData",
+            "startMethod" : "start(prodato.rka.RKAData)",
+            "output" : {
+              "map" : {
+                "out" : "result.RKAData"
+              }
+            },
+            "call" : {
+              "params" : [
+                { "name" : "RKAData", "type" : "prodato.rka.RKAData" }
+              ],
+              "map" : {
+                "param.RKAData" : "in",
+                "param.RKAData.name" : "ivy.session.getSessionUser().fullName"
+              }
+            }
+          },
+          "visual" : {
+            "at" : { "x" : 224, "y" : 256 }
+          },
+          "connect" : { "id" : "S10-f9", "to" : "S10-f8" }
+        }, {
+          "id" : "S10-f3",
+          "type" : "DialogCall",
+          "name" : "Überprüfe RKA",
+          "config" : {
+            "dialogId" : "prodato.rka.verifyRKA",
+            "startMethod" : "start(prodato.rka.RKAData)",
+            "output" : {
+              "map" : {
+                "out" : [
+                  "in",
+                  "result.RKAData"
+                ]
+              }
+            },
+            "call" : {
+              "params" : [
+                { "name" : "RKAData", "type" : "prodato.rka.RKAData" }
+              ],
+              "map" : {
+                "param.RKAData" : "in"
+              }
+            }
+          },
+          "visual" : {
+            "at" : { "x" : 544, "y" : 256 }
+          },
+          "connect" : { "id" : "S10-f6", "to" : "S10-f5" }
+        }, {
+          "id" : "S10-f5",
+          "type" : "Alternative",
+          "name" : "RKA ok?",
+          "visual" : {
+            "at" : { "x" : 664, "y" : 256 },
+            "labelOffset" : { "x" : 14, "y" : 34 }
+          },
+          "connect" : [
+            { "id" : "S10-f0", "to" : "S10-g1", "label" : {
+                "name" : "Ja"
+              }, "condition" : "in.isTEAok == true" },
+            { "id" : "S10-f7", "to" : "S10-f1", "via" : [ { "x" : 664, "y" : 192 }, { "x" : 248, "y" : 192 } ], "label" : {
+                "name" : "Nein",
+                "segment" : 1.48
+              } }
+          ]
+        }, {
+          "id" : "S10-f8",
+          "type" : "Script",
+          "name" : "Calculator",
+          "config" : {
+            "output" : {
+              "code" : [
+                "// Anzahl der Gesamttage",
+                "in.daysTotal = in.dateTravelEnd.minus(in.dateTravelStart).toNumber();",
+                "in.daysTotal = in.daysTotal /86400 + 1;",
+                "",
+                "// Erstattung Privatfahrzeug (0,30€ pro km)",
+                "in.expenses.expensesCar = in.kilometresPrivateCar * 0.3;",
+                "",
+                "// Grundanspruch Verpflegung vor Kürzungen (14€ je An-/Abreisetag, 28€ je ganzer Tag)",
+                "if (in.daysTotal == 1 ) {",
+                "  in.refundFoodBeforeCuts = 14;",
+                "} else {  in.refundFoodBeforeCuts = (in.daysTotal-1) * 28;",
+                "}",
+                "",
+                "// Verpflegungskürzungen",
+                "in.cutsFood.cutsBreakfast = in.frequencyUnpaidFood.frequencyUnpaidBreakfast * (-5.6);",
+                "in.cutsFood.cutsLunch = in.frequencyUnpaidFood.frequencyUnpaidLunch * (-11.2);",
+                "in.cutsFood.cutsDinner = in.frequencyUnpaidFood.frequencyUnpaidDinner * (-11.2);",
+                "",
+                "// Finale Erstattung Verpflegung nach Kürzungen",
+                "in.expenses.expensesFood = in.refundFoodBeforeCuts + in.cutsFood.cutsBreakfast+in.cutsFood.cutsLunch + in.cutsFood.cutsDinner;",
+                "",
+                "// Summe Gesamtausgaben",
+                "in.expensesTotal = in.expenses.expensesCar + in.expenses.expensesTrain + in.expenses.expensesTaxi + in.expenses.expensesPlane + in.expenses.expensesHotel + in.expenses.expensesNV + in.expenses.expensesOther + in.expenses.expensesFood;"
+              ]
+            }
+          },
+          "visual" : {
+            "at" : { "x" : 384, "y" : 256 }
+          },
+          "connect" : { "id" : "S10-f4", "to" : "S10-f3" }
+        } ],
+      "visual" : {
+        "at" : { "x" : 224, "y" : 64 }
+      },
+      "connect" : { "id" : "f2", "to" : "S20" }
+    }, {
+      "id" : "S20",
+      "type" : "EmbeddedProcess",
+      "name" : "Prüfe RKA",
+      "elements" : [ {
+          "id" : "S20-g0",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 336, "y" : 64 }
+          },
+          "parentConnector" : "f2",
+          "connect" : { "id" : "S20-f4", "to" : "S20-f3" }
+        }, {
+          "id" : "S20-g1",
+          "type" : "EmbeddedEnd",
+          "visual" : {
+            "at" : { "x" : 752, "y" : 64 }
+          },
+          "parentConnector" : "f5"
+        }, {
+          "id" : "S20-f3",
+          "type" : "UserTask",
+          "name" : "managerReviewRKA",
+          "config" : {
+            "dialogId" : "prodato.rka.managerReviewRKA",
+            "startMethod" : "start(String,Date,Date,Number,String,Number,Number,String,prodato.rka.expenses)",
+            "output" : {
+              "map" : {
+                "out" : "in",
+                "out.comment" : "result.comment",
+                "out.dateTravelEnd" : "result.dateTravelEnd",
+                "out.dateTravelStart" : "result.dateTravelStart",
+                "out.daysTotal" : "result.daysTotal",
+                "out.expenses" : "result.expenses",
+                "out.expensesTotal" : "result.expensesTotal",
+                "out.kilometresPrivateCar" : "result.kilometresPrivateCar",
+                "out.name" : "result.name",
+                "out.reviewTEA" : "result.reviewTEA",
+                "out.travelReason" : "result.travelReason"
+              }
+            },
+            "task" : {
+              "name" : "Review RKA",
+              "responsible" : {
+                "role" : "Manager"
+              }
+            },
+            "call" : {
+              "params" : [
+                { "name" : "name", "type" : "String" },
+                { "name" : "dateTravelStart", "type" : "Date" },
+                { "name" : "dateTravelEnd", "type" : "Date" },
+                { "name" : "daysTotal", "type" : "Number" },
+                { "name" : "travelReason", "type" : "String" },
+                { "name" : "kilometresPrivateCar", "type" : "Number" },
+                { "name" : "expensesTotal", "type" : "Number" },
+                { "name" : "comment", "type" : "String" },
+                { "name" : "expenses", "type" : "prodato.rka.expenses" }
+              ],
+              "map" : {
+                "param.name" : "in.name",
+                "param.dateTravelStart" : "in.dateTravelStart",
+                "param.dateTravelEnd" : "in.dateTravelEnd",
+                "param.daysTotal" : "in.daysTotal",
+                "param.travelReason" : "in.travelReason",
+                "param.kilometresPrivateCar" : "in.kilometresPrivateCar",
+                "param.expensesTotal" : "in.expensesTotal",
+                "param.comment" : "in.comment",
+                "param.expenses" : "in.expenses"
+              }
+            }
+          },
+          "visual" : {
+            "at" : { "x" : 560, "y" : 64 }
+          },
+          "connect" : { "id" : "S20-f0", "to" : "S20-g1" }
+        }, {
+          "id" : "S20-g2",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 576, "y" : 384 }
+          },
+          "parentConnector" : "f10"
+        } ],
+      "visual" : {
+        "at" : { "x" : 224, "y" : 384 }
+      },
+      "connect" : { "id" : "f5", "to" : "f4" }
+    }, {
+      "id" : "f4",
+      "type" : "Alternative",
+      "name" : "RKA korrekt?",
+      "visual" : {
+        "at" : { "x" : 392, "y" : 384 },
+        "labelOffset" : { "x" : 14, "y" : 34 }
+      },
+      "connect" : [
+        { "id" : "f6", "to" : "S30", "label" : {
+            "name" : "Ja"
+          }, "condition" : "in.reviewTEA == 1" },
+        { "id" : "f11", "to" : "f12", "label" : {
+            "name" : "Nein"
+          } }
+      ]
+    }, {
+      "id" : "S30",
+      "type" : "EmbeddedProcess",
+      "name" : "Verifiziere RKA",
+      "elements" : [ {
+          "id" : "S30-g0",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 64, "y" : 256 }
+          },
+          "parentConnector" : "f6",
+          "connect" : { "id" : "S30-f2", "to" : "S30-f1" }
+        }, {
+          "id" : "S30-g1",
+          "type" : "EmbeddedEnd",
+          "visual" : {
+            "at" : { "x" : 576, "y" : 256 }
+          },
+          "parentConnector" : "f8"
+        }, {
+          "id" : "S30-f1",
+          "type" : "UserTask",
+          "name" : "RKA freigeben",
+          "config" : {
+            "dialogId" : "prodato.rka.managerVerifyRKA",
+            "startMethod" : "start(prodato.rka.RKAData)",
+            "output" : {
+              "map" : {
+                "out" : [
+                  "in",
+                  "result.RKAData"
+                ]
+              }
+            },
+            "task" : {
+              "responsible" : {
+                "role" : "Manager"
+              }
+            },
+            "call" : {
+              "params" : [
+                { "name" : "RKAData", "type" : "prodato.rka.RKAData" }
+              ],
+              "map" : {
+                "param.RKAData" : "in"
+              }
+            }
+          },
+          "visual" : {
+            "at" : { "x" : 296, "y" : 256 }
+          },
+          "connect" : { "id" : "S30-f0", "to" : "S30-g1" }
+        }, {
+          "id" : "S30-g2",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 320, "y" : 64 }
+          },
+          "parentConnector" : "f1"
+        } ],
+      "visual" : {
+        "at" : { "x" : 680, "y" : 384 }
+      },
+      "connect" : { "id" : "f8", "to" : "f7" }
+    }, {
+      "id" : "f7",
+      "type" : "Alternative",
+      "name" : "Verifikation erfolgreich?",
+      "visual" : {
+        "at" : { "x" : 824, "y" : 384 },
+        "labelOffset" : { "x" : 16, "y" : -24 }
+      },
+      "connect" : [
+        { "id" : "f9", "to" : "S40", "label" : {
+            "name" : "Ja"
+          }, "condition" : "in.isTEAok == true" },
+        { "id" : "f19", "to" : "S90", "label" : {
+            "name" : "Nein"
+          } }
+      ]
+    }, {
+      "id" : "S40",
+      "type" : "EmbeddedProcess",
+      "name" : "Erstelle PDF",
+      "elements" : [ {
+          "id" : "S40-g0",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 64, "y" : 256 }
+          },
+          "parentConnector" : "f9",
+          "connect" : { "id" : "S40-f0", "to" : "S40-S10" }
+        }, {
+          "id" : "S40-g1",
+          "type" : "EmbeddedEnd",
+          "visual" : {
+            "at" : { "x" : 576, "y" : 256 }
+          },
+          "parentConnector" : "f20"
+        }, {
+          "id" : "S40-S10",
+          "type" : "ServiceBpmnElement",
+          "name" : "generate PDF",
+          "elements" : [ {
+              "id" : "S40-S10-g0",
+              "type" : "EmbeddedStart",
+              "visual" : {
+                "at" : { "x" : 64, "y" : 256 }
+              },
+              "parentConnector" : "S40-f0",
+              "connect" : { "id" : "S40-S10-f2", "to" : "S40-S10-f1" }
+            }, {
+              "id" : "S40-S10-g1",
+              "type" : "EmbeddedEnd",
+              "visual" : {
+                "at" : { "x" : 576, "y" : 256 }
+              },
+              "parentConnector" : "S40-f1"
+            }, {
+              "id" : "S40-S10-f1",
+              "type" : "Script",
+              "name" : "generate template mergefields",
+              "config" : {
+                "output" : {
+                  "code" : [
+                    "import ch.ivyteam.ivy.addons.docfactory.TemplateMergeField;",
+                    "",
+                    "in.mergeFields.add(new TemplateMergeField(\"name\",in.name));",
+                    "in.mergeFields.add(new TemplateMergeField(\"travelstart\",in.dateTravelStart));",
+                    "in.mergeFields.add(new TemplateMergeField(\"travelend\",in.dateTravelEnd));",
+                    "in.mergeFields.add(new TemplateMergeField(\"travelreason\",in.travelReason));",
+                    "in.mergeFields.add(new TemplateMergeField(\"daystotal\",in.daysTotal));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expensescar\",in.expenses.expensesCar));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expensestrain\",in.expenses.expensesTrain));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expensestaxi\",in.expenses.expensesTaxi));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expensesplane\",in.expenses.expensesPlane));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expenseshotel\",in.expenses.expensesHotel));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expensesnv\",in.expenses.expensesNV));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expensesother\",in.expenses.expensesOther));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expensesfood\",in.expenses.expensesFood));",
+                    "in.mergeFields.add(new TemplateMergeField(\"expensestotal\",in.expensesTotal));",
+                    "in.mergeFields.add(new TemplateMergeField(\"date\",new Date() ));"
+                  ]
+                }
+              },
+              "visual" : {
+                "at" : { "x" : 224, "y" : 256 }
+              },
+              "connect" : { "id" : "S40-S10-f4", "to" : "S40-S10-f3" }
+            }, {
+              "id" : "S40-S10-f3",
+              "type" : "SubProcessCall",
+              "name" : "writeSerialLetterToOneCorrespondent",
+              "config" : {
+                "processCall" : "Functional Processes/writeSerialLetterToOneCorrespondent:writeSerialLetterToOneCorrespondant(List<ch.ivyteam.ivy.addons.docfactory.TemplateMergeField>,String,String,String,String)",
+                "output" : {
+                  "map" : {
+                    "out" : "in",
+                    "out.rkaFile" : "result.fileOperationMessage.files.get(0)"
+                  },
+                  "code" : "ivy.case.documents().add(\"RKA.pdf\").write().withContentFrom(result.fileOperationMessage.files.get(0));"
+                },
+                "call" : {
+                  "params" : [
+                    { "name" : "listOfTemplateMergeFields", "type" : "List<ch.ivyteam.ivy.addons.docfactory.TemplateMergeField>" },
+                    { "name" : "optionalOutputpath", "type" : "String" },
+                    { "name" : "optionalLetterName", "type" : "String" },
+                    { "name" : "optionalOutputFormat", "type" : "String" },
+                    { "name" : "templatePath", "type" : "String" }
+                  ],
+                  "map" : {
+                    "param.listOfTemplateMergeFields" : "in.mergeFields",
+                    "param.optionalOutputFormat" : "\"PDF\"",
+                    "param.templatePath" : "\"C:\\\\Templates\\\\RKA\\\\RKAtemplate.docx\""
+                  }
+                }
+              },
+              "visual" : {
+                "at" : { "x" : 408, "y" : 256 },
+                "icon" : "res:/webContent/icons/doc-factory-logo.png"
+              },
+              "connect" : { "id" : "S40-S10-f0", "to" : "S40-S10-g1" }
+            } ],
+          "visual" : {
+            "at" : { "x" : 176, "y" : 256 }
+          },
+          "connect" : { "id" : "S40-f1", "to" : "S40-g1" }
+        } ],
+      "visual" : {
+        "at" : { "x" : 976, "y" : 384 }
+      },
+      "connect" : { "id" : "f20", "to" : "f13" }
+    }, {
+      "id" : "f12",
+      "type" : "Alternative",
+      "name" : "Fehler korrigierbar?",
+      "visual" : {
+        "at" : { "x" : 392, "y" : 272 },
+        "labelOffset" : { "x" : 14, "y" : 34 }
+      },
+      "connect" : [
+        { "id" : "f14", "to" : "S70", "label" : {
+            "name" : "Ja"
+          }, "condition" : "in.reviewTEA == 2" },
+        { "id" : "f15", "to" : "S80", "label" : {
+            "name" : "Nein"
+          } }
+      ]
+    }, {
+      "id" : "S70",
+      "type" : "EmbeddedProcess",
+      "name" : "Korrigiere Fehler",
+      "elements" : [ {
+          "id" : "S70-g0",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 64, "y" : 256 }
+          },
+          "parentConnector" : "f14",
+          "connect" : { "id" : "S70-f2", "to" : "S70-f1" }
+        }, {
+          "id" : "S70-g1",
+          "type" : "EmbeddedEnd",
+          "visual" : {
+            "at" : { "x" : 360, "y" : 256 }
+          },
+          "parentConnector" : "f1"
+        }, {
+          "id" : "S70-f1",
+          "type" : "DialogCall",
+          "name" : "managerEditRKA",
+          "config" : {
+            "dialogId" : "prodato.rka.managerEditRKA",
+            "startMethod" : "start(prodato.rka.RKAData)",
+            "output" : {
+              "map" : {
+                "out" : [
+                  "in",
+                  "result.RKAData"
+                ]
+              }
+            },
+            "call" : {
+              "params" : [
+                { "name" : "RKAData", "type" : "prodato.rka.RKAData" }
+              ],
+              "map" : {
+                "param.RKAData" : "in"
+              }
+            }
+          },
+          "visual" : {
+            "at" : { "x" : 200, "y" : 256 }
+          },
+          "connect" : { "id" : "S70-f0", "to" : "S70-g1" }
+        } ],
+      "visual" : {
+        "at" : { "x" : 680, "y" : 272 }
+      },
+      "connect" : { "id" : "f1", "to" : "S30" }
+    }, {
+      "id" : "S80",
+      "type" : "EmbeddedProcess",
+      "name" : "Mitteilung an MA",
+      "elements" : [ {
+          "id" : "S80-g0",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 336, "y" : 256 }
+          },
+          "parentConnector" : "f15",
+          "connect" : { "id" : "S80-f1", "to" : "S80-f5" }
+        }, {
+          "id" : "S80-g1",
+          "type" : "EmbeddedEnd",
+          "visual" : {
+            "at" : { "x" : 768, "y" : 256 }
+          },
+          "parentConnector" : "f17"
+        }, {
+          "id" : "S80-f3",
+          "type" : "EMail",
+          "name" : "Send Decline Email",
+          "config" : {
+            "headers" : {
+              "emailSubject" : "Ihre Reisekostenabrechnung (<%=in.dateTravelStart%> - <%=in.dateTravelEnd%>) wurde abgelehnt",
+              "emailFrom" : "bastian.schmidt@prodato.de",
+              "emailTo" : "<%=ivy.case.creatorUser.eMailAddress%>",
+              "emailCC" : "bastian.schmidt@prodato.de"
+            },
+            "message" : [
+              "Hallo <%=in.name%>,",
+              "",
+              "leider wurde deine Reisekostenabrechnung für den Zeitraum vom <%=in.dateTravelStart%> bis <%=in.dateTravelEnd%> wurde von abgelehnt.",
+              "",
+              "Folgende Begründung wurde dabei abgegeben:",
+              "",
+              "<%=in.reviewDeclineReason%>",
+              "",
+              "Bitte füllen Sie die Reisekostenrechnung für diesen Zeitraum erneut aus."
+            ]
+          },
+          "visual" : {
+            "at" : { "x" : 624, "y" : 256 }
+          },
+          "connect" : { "id" : "S80-f0", "to" : "S80-g1" }
+        }, {
+          "id" : "S80-f5",
+          "type" : "DialogCall",
+          "name" : "reviewDeclinedDialogue",
+          "config" : {
+            "dialogId" : "prodato.rka.reviewDeclinedDialogue",
+            "startMethod" : "start(String,Date,Date,String,Number,String)",
+            "output" : {
+              "map" : {
+                "out" : "in",
+                "out.name" : "result.name",
+                "out.dateTravelStart" : "result.dateTravelStart",
+                "out.dateTravelEnd" : "result.dateTravelEnd",
+                "out.travelReason" : "result.travelReason",
+                "out.expensesTotal" : "result.expensesTotal",
+                "out.reviewDeclineReason" : "result.reviewDeclineReason"
+              }
+            },
+            "call" : {
+              "params" : [
+                { "name" : "name", "type" : "String" },
+                { "name" : "dateTravelStart", "type" : "Date" },
+                { "name" : "dateTravelEnd", "type" : "Date" },
+                { "name" : "travelReason", "type" : "String" },
+                { "name" : "expensesTotal", "type" : "Number" },
+                { "name" : "reviewDeclineReason", "type" : "String" }
+              ],
+              "map" : {
+                "param.name" : "in.name",
+                "param.dateTravelStart" : "in.dateTravelStart",
+                "param.dateTravelEnd" : "in.dateTravelEnd",
+                "param.travelReason" : "in.travelReason",
+                "param.expensesTotal" : "in.expensesTotal",
+                "param.reviewDeclineReason" : "in.reviewDeclineReason"
+              }
+            }
+          },
+          "visual" : {
+            "at" : { "x" : 456, "y" : 256 }
+          },
+          "connect" : { "id" : "S80-f2", "to" : "S80-f3" }
+        } ],
+      "visual" : {
+        "at" : { "x" : 392, "y" : 176 }
+      },
+      "connect" : { "id" : "f17", "to" : "f16" }
+    }, {
+      "id" : "f16",
+      "type" : "TaskEnd",
+      "visual" : {
+        "at" : { "x" : 680, "y" : 176 }
+      }
+    }, {
+      "id" : "S90",
+      "type" : "EmbeddedProcess",
+      "name" : "Erstellung Fehlerbericht",
+      "elements" : [ {
+          "id" : "S90-g0",
+          "type" : "EmbeddedStart",
+          "visual" : {
+            "at" : { "x" : 320, "y" : 64 }
+          },
+          "parentConnector" : "f19",
+          "connect" : { "id" : "S90-f0", "to" : "S90-g1" }
+        }, {
+          "id" : "S90-g1",
+          "type" : "EmbeddedEnd",
+          "visual" : {
+            "at" : { "x" : 456, "y" : 64 }
+          },
+          "parentConnector" : "f10"
+        } ],
+      "visual" : {
+        "at" : { "x" : 824, "y" : 504 }
+      },
+      "connect" : { "id" : "f10", "to" : "S20", "via" : [ { "x" : 224, "y" : 504 } ] }
+    }, {
+      "id" : "f13",
+      "type" : "TaskEnd",
+      "visual" : {
+        "at" : { "x" : 1096, "y" : 384 }
+      }
+    } ],
+  "layout" : {
+    "lanes" : [ {
+        "name" : "Employee",
+        "size" : 128
+      }, {
+        "name" : "Manager",
+        "size" : 426
+      } ]
+  }
+}

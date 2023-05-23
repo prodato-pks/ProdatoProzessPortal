@@ -1,0 +1,4 @@
+managerEditRKAData #class
+prodato.rka.managerEditRKA #namespace
+RKAData prodato.rka.RKAData #field
+RKAData PERSISTENT #fieldModifier

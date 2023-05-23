@@ -1,0 +1,18 @@
+expenses #class
+prodato.rka #namespace
+expensesTrain Number #field
+expensesTrain PERSISTENT #fieldModifier
+expensesTaxi Number #field
+expensesTaxi PERSISTENT #fieldModifier
+expensesPlane Number #field
+expensesPlane PERSISTENT #fieldModifier
+expensesNV Number #field
+expensesNV PERSISTENT #fieldModifier
+expensesFood Number #field
+expensesFood PERSISTENT #fieldModifier
+expensesHotel Number #field
+expensesHotel PERSISTENT #fieldModifier
+expensesOther Number #field
+expensesOther PERSISTENT #fieldModifier
+expensesCar Number #field
+expensesCar PERSISTENT #fieldModifier

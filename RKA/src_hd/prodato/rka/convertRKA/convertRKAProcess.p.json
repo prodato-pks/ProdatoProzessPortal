@@ -1,0 +1,60 @@
+{
+  "format" : "10.0.0",
+  "id" : "187BD51BED6CD56B",
+  "kind" : "HTML_DIALOG",
+  "config" : {
+    "data" : "prodato.rka.convertRKA.convertRKAData"
+  },
+  "elements" : [ {
+      "id" : "f0",
+      "type" : "HtmlDialogStart",
+      "name" : "start(RKAData)",
+      "config" : {
+        "callSignature" : "start",
+        "result" : {
+          "params" : [
+            { "name" : "RKAData", "type" : "prodato.rka.RKAData" }
+          ],
+          "map" : {
+            "result.RKAData" : "in.RKAData"
+          }
+        },
+        "input" : {
+          "params" : [
+            { "name" : "RKAData", "type" : "prodato.rka.RKAData" }
+          ],
+          "map" : {
+            "out.RKAData" : "param.RKAData"
+          }
+        },
+        "guid" : "187BD51BED6DD0CB"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 64 }
+      },
+      "connect" : { "id" : "f2", "to" : "f1" }
+    }, {
+      "id" : "f1",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 224, "y" : 64 }
+      }
+    }, {
+      "id" : "f3",
+      "type" : "HtmlDialogEventStart",
+      "name" : "close",
+      "config" : {
+        "guid" : "187BD51BED8FD151"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 160 }
+      },
+      "connect" : { "id" : "f5", "to" : "f4" }
+    }, {
+      "id" : "f4",
+      "type" : "HtmlDialogExit",
+      "visual" : {
+        "at" : { "x" : 224, "y" : 160 }
+      }
+    } ]
+}

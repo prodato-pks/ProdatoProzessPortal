@@ -1,0 +1,8 @@
+cutsFood #class
+prodato.rka #namespace
+cutsBreakfast Number #field
+cutsBreakfast PERSISTENT #fieldModifier
+cutsLunch Number #field
+cutsLunch PERSISTENT #fieldModifier
+cutsDinner Number #field
+cutsDinner PERSISTENT #fieldModifier

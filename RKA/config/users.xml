@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<userConfig>
+    <user>
+        <username>Employee</username>
+        <fullName>Employee Tester</fullName>
+        <emailAddress>employee@test.de</emailAddress>
+        <role>Manager</role>
+    </user>
+    <user>
+        <username>Manager</username>
+        <fullName>Manager Tester</fullName>
+        <emailAddress>manager@test.de</emailAddress>
+        <role>Manager</role>
+    </user>
+</userConfig>

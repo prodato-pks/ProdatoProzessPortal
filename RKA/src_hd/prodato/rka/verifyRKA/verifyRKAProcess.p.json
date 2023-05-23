@@ -1,0 +1,85 @@
+{
+  "format" : "10.0.0",
+  "id" : "187B7722D48F98D1",
+  "kind" : "HTML_DIALOG",
+  "config" : {
+    "data" : "prodato.rka.verifyRKA.verifyRKAData"
+  },
+  "elements" : [ {
+      "id" : "f0",
+      "type" : "HtmlDialogStart",
+      "name" : "start(RKAData)",
+      "config" : {
+        "callSignature" : "start",
+        "result" : {
+          "params" : [
+            { "name" : "RKAData", "type" : "prodato.rka.RKAData" }
+          ],
+          "map" : {
+            "result.RKAData" : "in.RKAData"
+          }
+        },
+        "input" : {
+          "params" : [
+            { "name" : "RKAData", "type" : "prodato.rka.RKAData" }
+          ],
+          "map" : {
+            "out.RKAData" : "param.RKAData"
+          }
+        },
+        "guid" : "187B7722D4D4C712"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 64 }
+      },
+      "connect" : { "id" : "f2", "to" : "f1" }
+    }, {
+      "id" : "f1",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 224, "y" : 64 }
+      }
+    }, {
+      "id" : "f4",
+      "type" : "HtmlDialogExit",
+      "visual" : {
+        "at" : { "x" : 224, "y" : 160 }
+      }
+    }, {
+      "id" : "f6",
+      "type" : "HtmlDialogEventStart",
+      "name" : "approve",
+      "config" : {
+        "guid" : "187B79ECEBF3C918",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.RKAData.isTEAok" : "true"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 88, "y" : 160 },
+        "labelOffset" : { "x" : 15, "y" : 35 }
+      },
+      "connect" : { "id" : "f3", "to" : "f4" }
+    }, {
+      "id" : "f8",
+      "type" : "HtmlDialogEventStart",
+      "name" : "reject",
+      "config" : {
+        "guid" : "187B79ECEC0F67DF",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.RKAData.isTEAok" : "false"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 88, "y" : 248 },
+        "labelOffset" : { "x" : 8, "y" : 35 }
+      },
+      "connect" : { "id" : "f5", "to" : "f4" }
+    } ]
+}
